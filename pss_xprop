@@ -29,7 +29,7 @@ function getpss {
 cpu=$(ps --no-header -C $1 -o %cpu | awk '{print $1}' | awk '{total+=$1}END{print total}')
 if [ -z "$sum" ]
 then return
-else #barvalue=$(($sum*40/8002600)) && restbar=$((40-$barvalue)) && bar=$(repeat $barvalue '/';  repeat $restbar '-' ;echo -e) && 
+else 
 perc=$(echo "scale=2;$sum*100/8002600" | bc -l)
 fi
 
