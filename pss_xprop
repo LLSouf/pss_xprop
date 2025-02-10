@@ -48,7 +48,7 @@ fi
 function watcher {
 name=$1
 echo "soufiane" | sudo -S smem -Htr -c "pss command" 2&> /dev/null > ~/.cache/pss_usage/mem_pss
-sum=$(cat /home/soufiane/.cache/pss_usage/mem_pss | grep $name  | awk '{print $1}' | awk '{total+=$1}END{print total}')
+sum=$(cat ~/.cache/pss_usage/mem_pss | grep $name  | awk '{print $1}' | awk '{total+=$1}END{print total}')
 getpss $name | column -t -R 3,5 -c 20
 }
 clear
