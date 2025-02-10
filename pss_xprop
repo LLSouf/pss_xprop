@@ -1,0 +1,60 @@
+#!/bin/bash
+
+mkdir ~/.cache/pss_usage 2&> /dev/null
+
+if [ -z $1 ]
+then
+	name=$(xprop | grep -i class |  cut -d'"' -f 2)
+	appcust=("chrome" "discord" "python" "i3" "gvfs" "systemd" "at-spi" "vim")
+	for ele in ${appcust[@]}
+	do
+		if [[ "$name" == *"$ele"* ]]
+		then
+			name=$ele
+		fi
+	done
+else
+	name=$1
+fi
+
+repeat(){
+	local start=1
+	local end=${1:-80}
+	local str="${2:-=}"
+	local range=$(seq $start $end)
+	for i in $range ; do echo -n "${str}"; done
+}
+
+function getpss {  
+cpu=$(ps --no-header -C $1 -o %cpu | awk '{print $1}' | awk '{total+=$1}END{print total}')
+if [ -z "$sum" ]
+then return
+else #barvalue=$(($sum*40/8002600)) && restbar=$((40-$barvalue)) && bar=$(repeat $barvalue '/';  repeat $restbar '-' ;echo -e) && 
+perc=$(echo "scale=2;$sum*100/8002600" | bc -l)
+fi
+
+if [[ ${#sum} < 4  ]]
+then echo "$1 : $sum Ki $perc%"; echo  "CPU : $cpu%"
+
+elif [[ ${#sum} < 7 ]]
+then mb=$(echo "scale=2;$sum/1024" | bc -l) && echo "$1 : $mb Mi $perc%"; echo  "CPU : $cpu%"
+
+elif [[ ${#sum} > 6 ]]
+then gb=$(echo "scale=2;$sum/1048576" | bc -l) && echo "$1 : $gb Gi $perc%"; echo  "CPU : $cpu%"
+
+fi
+}
+
+function watcher {
+name=$1
+echo "soufiane" | sudo -S smem -Htr -c "pss command" 2&> /dev/null > ~/.cache/pss_usage/mem_pss
+sum=$(cat /home/soufiane/.cache/pss_usage/mem_pss | grep $name  | awk '{print $1}' | awk '{total+=$1}END{print total}')
+getpss $name | column -t -R 3,5 -c 20
+}
+clear
+while sleep 1; do
+    tput cup 0 0
+watcher $name
+done
+
+
