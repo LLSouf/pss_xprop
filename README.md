@@ -4,10 +4,15 @@ A lightweight bash script that provides real-time monitoring of memory (PSS) and
 
 ## ✨ Features
 🖥️ Real-time memory and CPU monitoring
+
 🎯 Automatic active window process detection
+
 📊 Memory usage in appropriate units (Ki, Mi, Gi)
+
 💻 CPU usage percentage display
+
 🔄 Auto-refresh every second
+
 🎨 Clean, columnar output format
 
 ## 🚀 Usage
@@ -19,8 +24,11 @@ A lightweight bash script that provides real-time monitoring of memory (PSS) and
 ## ⚙️ Prerequisites
 
 Linux system
+
 xprop utility
+
 smem utility
+
 sudo privileges
 
 ## 🛠️ Configuration
@@ -33,5 +41,7 @@ appcust=("chrome" "discord" "python" "i3" "gvfs" "systemd" "at-spi" "vim")
 
 ## ⚠️ Notes
 Requires sudo password for smem
+
 Memory percentage based on 8GB total RAM (configurable)
+
 Auto-detects common applications via window title
